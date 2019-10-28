@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src=".\js\bootstrap.min.js"></script>
+    <link rel="stylesheet" href="login.css">
+<script type="text/javascript">
+$(document).ready(function(){
+	//当单击登录按钮时触发的事件
+	$(".btn").click(function(){
+		// 获账号文本域的值
+		var user=$("#user").val();
+		//获取密码文本域的值
+		var passwd=$("#passwd").val();
+		//定义正则表达式对象
+		var pattern = new RegExp("[~'@#$%^&*()-+_=:]");
+		//对账号和密码进行非空判断  
+		if(user==""){
+			alert("请输入账号！");
+			$("#user").focus();
+			return false;
+		}else if(pattern.test(user)){
+			alert("温馨提示：用户名中含有非法字符，请重新输入！");
+            $("#user").focus();
+            return false;
+		}else if(passwd==""){
+			alert('请输入密码!');
+			$("#passwd").focus();
+			return false;
+		}else if(pattern.test(passwd)){
+			alert("温馨提示：密码中含有非法字符，请重新输入！");
+            $("#passwd").focus();
+            return false;
+		}else{
+			$.post("login_check.php",{user:user,passwd:passwd},function(data){
+				if($.trim(data)=='yes'){
+					alert('登录成功！');
+					window.location.href='index.php';
+					return true;
+				}else{
+					alert('你输入的账号或密码不正确！');
+					//window.location.href='index.html';
+					return false;
+				}
+			},"text");
+			
+		}
+	});
+});
+</script>
+
+<script type="text/javascript">
+ 
+	function KeyDown() {
+		if(window.event.keyCode==13){
+		//document.getElementById("btn_login").click;//id为登录按钮id
+		alert('kkk');
+		}
+	}
+	
+</script>
+
+
+</head>
+<body >
+    <div class="container">
+        <div class="form row" >
+            <div class="form-horizontal col-md-offset-3" id="login_form">
+                <h3 class="form-title">STU_LOGIN</h3>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <i class="fa fa-user fa-lg"></i>
+                        <input class="form-control required" type="text" placeholder="Username" id="user" name="user" autofocus="autofocus" maxlength="20"/>
+                    </div>
+                    <div class="form-group">
+                            <i class="fa fa-lock fa-lg"></i>
+                            <input class="form-control required" type="password" placeholder="Password" id="passwd" name="passwd" maxlength="8"/>
+                    </div>
+
+                    <div class="form-group col-md-offset-9">
+                    	<div class="btn" id="click">
+                    	<input type="submit" value="登录" id="btn_login" οnClick="KeyDown()">
+
+                    	</div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
